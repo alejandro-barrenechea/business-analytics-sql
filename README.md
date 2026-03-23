@@ -17,18 +17,58 @@ Actualmente, la empresa **SuperStore** no cuenta con un análisis estructurado q
 
 Los datos originales, junto con una explicación de cada columna, se pueden encontrar [aquí](https://www.kaggle.com/datasets/thuandao/superstore-sales-analytics).
 
-El conjunto de datos incluye cinco tablas que capturan evaluaciones de desempeño, datos demográficos de los empleados, niveles de satisfacción y calificaciones, distribuidos en más de 8,100 registros y 40 columnas.
+El conjunto de datos incluye una tabla que capturan el registro de ventas, pedidos, clientes, productos, enviós distribuidos en más de 25,000 registros y 21 columnas.
+
 
 ![HR Analytics](captura1.png)
 
 
 
+## Tareas (Task)
 
 
+En este análisis, ayudo a responder las siguientes preguntas de negocio sobre ventas, clientes, productos y logística:
 
+1. **Distribución de ventas por categoría:** ¿Cómo se distribuyen las ventas de la categoría Accessories según subcategoría y año en términos porcentuales?
 
+2. **Contribución por prioridad de pedido:** ¿Qué porcentaje de ingresos aporta cada nivel de prioridad de pedido?
 
+3. **Clientes más activos:** ¿Qué clientes compran la mayor cantidad de productos?
 
+4. **Preferencias de envío:** ¿Qué tipos de envío fueron más utilizados en 2014 y cuántos pedidos se realizaron por cada uno?
+
+5. **Desempeño por Viajes:** PENDIENTE
+
+6. **Productos más rentables** ¿Cuáles son los productos que generan mayor ganancia por año?
+
+7. **Relación entre almacenamiento y rentabilidad:** ¿Qué productos tienen un tiempo de almacenamiento superior al promedio y cómo se relaciona esto con su rentabilidad?
+
+## Limpieza de Datos
+
+Antes de realizar el análisis, es fundamental asegurar que los datos estén limpios y listos.
+
+#### Valores Nulos o Faltantes
+
+Primero, verifiqué la existencia de valores faltantes en el campo clave: `order_id`. No se encontraron valores nulos.
+
+```sql
+-- Verificar valores faltantes en la tabla Employee --
+
+SELECT COUNT(*) 
+FROM SuperStore
+WHERE order_id IS NULL;
+
+-- Verificar valores duplicados en la tabla PerformanceRating --
+
+SELECT order_id,COUNT(*) 
+FROM SuperStore
+GROUP BY order_id 
+HAVING COUNT(*)>1
+```
+
+## Análisis Exploratorio de Datos (EDA) e Insights
+
+### Pregunta #1: ¿Cómo se distribuyen las ventas de la categoría Accessories según subcategoría y año en términos porcentuales?
 
 
 
