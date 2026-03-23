@@ -29,7 +29,7 @@ El conjunto de datos incluye una tabla que capturan el registro de ventas, pedid
 
 En este análisis, ayudo a responder las siguientes preguntas de negocio sobre ventas, clientes, productos y logística:
 
-1. **Distribución de ventas por categoría:** ¿Cómo se distribuyen las ventas de la categoría Accessories según subcategoría y año en términos porcentuales?
+1. **Distribución de ventas por categoría:** ¿Cómo se distribuyen las ventas según subcategoría y año en términos porcentuales?
 
 2. **Contribución por prioridad de pedido:** ¿Qué porcentaje de ingresos aporta cada nivel de prioridad de pedido?
 
@@ -52,13 +52,13 @@ Antes de realizar el análisis, es fundamental asegurar que los datos estén lim
 Primero, verifiqué la existencia de valores faltantes en el campo clave: `order_id`. No se encontraron valores nulos.
 
 ```sql
--- Verificar valores faltantes en la tabla Employee --
+-- Verificar valores faltantes en la tabla SuperStoree --
 
 SELECT COUNT(*) 
 FROM SuperStore
 WHERE order_id IS NULL;
 
--- Verificar valores duplicados en la tabla PerformanceRating --
+-- Verificar valores duplicados en la tabla SuperStore --
 
 SELECT order_id,COUNT(*) 
 FROM SuperStore
@@ -68,7 +68,38 @@ HAVING COUNT(*)>1
 
 ## Análisis Exploratorio de Datos (EDA) e Insights
 
-### Pregunta #1: ¿Cómo se distribuyen las ventas de la categoría Accessories según subcategoría y año en términos porcentuales?
+### Pregunta #1: ¿Cómo se distribuyen las ventas de la subcategoría y año en términos porcentuales?
+
+Calculé el total de ventas por año y subcategoría utilizando SUM(sales) y luego obtuve el porcentaje que representa cada año dentro de su subcategoría usando SUM() OVER (PARTITION BY sub_category). Esto me permite ver qué proporción de las ventas corresponde a cada subcategoría en cada año. Además, formateé el porcentaje con dos decimales para mayor claridad.
+
+
+```sql
+
+with analisis_subcategoria as(
+select
+      year,
+      category,
+      sub_category,
+      SUM(sales) as'suma_total',
+	  concat(format(sum(sales) *100.0/sum(sum(sales)) over ( partition by sub_category),'N2'),'%') as '%ventas'
+from basetotal
+group by year,category,sub_category
+)
+select * from analisis_subcategoria
+
+order by sub_CATEGORY,year desc;
+
+```
+![HR Analytics](PREGUNTA1.png)
+
+_Distribución porcentual de ventas por subcategoría y año_
+
+El análisis muestra que la participación de ventas varía entre subcategorías y años, evidenciando que algunas subcategorías concentran una mayor proporción de ingresos dentro del total.
+
+La empresa podria aplicar diferentes estrategias comerciales en las subcategorías con mayor participación de ventas, ya que representan el mayor aporte al ingreso
+
+
+### Pregunta #2: ¿Qué porcentaje de ingresos aporta cada nivel de prioridad de pedido?
 
 
 
@@ -77,8 +108,23 @@ HAVING COUNT(*)>1
 
 
 
+```sql
 
+with ingresos_categoria as(
+select 
+        order_priority,
+        sum(sales) 'Ingreso Totales', 
+        concat(format(sum(sales) *100.0/SUM(sum(sales))over (),'N2'),'%') as 'Porcemtaje'
+from basetotal
+group by order_priority
+)
+select 
+      * from ingresos_categoria
+order by [Ingreso Totales] desc;
 
+```
+
+![HR Analytics](PREGUNTA2.png)
 
 
 
