@@ -35,7 +35,7 @@ En este análisis, ayudo a responder las siguientes preguntas de negocio sobre v
 
 3. **Clientes más activos:** ¿Qué clientes compran la mayor cantidad de productos?
 
-4. **Preferencias de envío:** ¿Qué tipos de envío fueron más utilizados en 2014 y cuántos pedidos se realizaron por cada uno?
+4. **Preferencias de envío:** ¿Qué tipos de envío fueron más utilizados y cuántos pedidos se realizaron por cada uno?
 
 5. **Desempeño por Viajes:** PENDIENTE
 
@@ -92,7 +92,7 @@ order by sub_CATEGORY,year desc;
 ```
 ![HR Analytics](PREGUNTA1.png)
 
-_Distribución porcentual de ventas por subcategoría y año_
+_Distribución porcentual de ventas_
 
 El análisis muestra que la participación de ventas varía entre subcategorías y años, evidenciando que algunas subcategorías concentran una mayor proporción de ingresos dentro del total.
 
@@ -101,11 +101,7 @@ La empresa podria aplicar diferentes estrategias comerciales en las subcategorí
 
 ### Pregunta #2: ¿Qué porcentaje de ingresos aporta cada nivel de prioridad de pedido?
 
-
-
-
-
-
+Se agruparon primero los datos por nivel de prioridad de pedido utilizando GROUP BY order_priority y se obtuvo el total de ingresos mediante la función SUM(sales). Para determinar la participación de cada nivel respecto al total general, se aplicó una función de ventana SUM(SUM(sales)) OVER (), la cual permite obtener el total global de ingresos.
 
 
 ```sql
@@ -125,6 +121,75 @@ order by [Ingreso Totales] desc;
 ```
 
 ![HR Analytics](PREGUNTA2.png)
+
+_Ingreso_Prioridad_
+
+Los resultados nos indican que los ingresos mas fuertes para la empresa son por prioridad **Medium**, que representa mas del 50% del total, se sugiere analizar los niveles de prioridad con menor contribución para identificar posibles mejoras en su gestión, tiempos de atención o estrategia de uso.
+
+
+### Pregunta #3: ¿Qué clientes compran la mayor cantidad de productos?
+
+Se identificaron los clientes que compran la mayor cantidad de productos utilizando SUM(quantity) para obtener el total de unidades adquiridas por cada cliente. Luego, se agruparon los datos por customer_name mediante GROUP BY y se ordenaron de forma descendente para visualizar a los clientes con mayor volumen de compras. Finalmente, se utilizó TOP 10 para obtener únicamente los clientes con mayor cantidad de productos adquiridos.
+
+```sql
+
+with mejores_vendedores as (
+select TOP 10
+      sum(quantity) as 'Productos_vendidos',
+      customer_name from basetotal
+where quantity > 0
+group by customer_name
+order by sum(quantity) desc
+)
+
+select * from mejores_vendedores;
+
+```
+
+![HR Analytics](captura3.png)
+
+_Clientes_Top_
+
+El análisis permite identificar a los clientes con mayor volumen de compras, evidenciando que un grupo reducido concentra una gran cantidad de productos adquiridos, lo que los convierte en clientes clave para el negocio en términos de volumen de ventas.
+
+
+### Pregunta #4: ¿Qué tipos de envío fueron más utilizados y cuántos pedidos se realizaron por cada uno?
+
+Se utilizó la función COUNT(order_id) para contabilizar la cantidad de pedidos por cada tipo de envío (ship_mode). Los datos se agruparon por año y tipo de envío mediante GROUP BY, lo que permitió analizar la distribución de los pedidos a lo largo del tiempo.
+
+```sql
+
+with tipo_clase_viaje as(
+select 
+      year,
+	  ship_mode,
+	  count(order_id) as 'cantidad_pedidos' 
+from basetotal
+group by year,ship_mode
+)
+
+select *
+from tipo_clase_viaje
+
+order by cantidad_pedidos desc,year ;
+
+```
+
+![HR Analytics](Pregunta4.png)
+
+_Distribución de pedidos_
+
+Algunos tipos de envío concentran la mayor cantidad de pedidos, lo que indica su preferencia por parte de los clientes; por ello, se recomienda optimizar estos métodos para mejorar la eficiencia operativa
+
+
+
+
+
+
+
+
+
+
 
 
 
