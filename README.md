@@ -259,7 +259,7 @@ select * from top_ganancia_producto
 
 ```
 
-![HR Analytics](Pregunta5.png)
+![HR Analytics](PREGUNTA5.png)
 
 _Producto_ganancia_
 
@@ -290,7 +290,7 @@ ORDER BY promedio_ganancias desc;
 
 ```
 
-![HR Analytics](Pregunta6.png)
+![HR Analytics](PREGUNTA6.png)
 
 
 
@@ -317,7 +317,7 @@ ORDER BY year, total_ganancia DESC;
 
 ```
 
-![HR Analytics](Pregunta7.png)
+![HR Analytics](PREGUNTA7.png)
 
 
 Se recomienda enfocar estrategias comerciales y de fidelización en los segmentos más rentables para maximizar los ingresos.
@@ -347,7 +347,7 @@ ORDER BY shipping_cost DESC;
 
 ```
 
-![HR Analytics](Pregunta8.png)
+![HR Analytics](PREGUNTA8.png)
 
 Se recomienda revisar la estrategia logística y los costos de envío en estos casos, ya que podrían estar reduciendo las ganancias del negocio.
 
@@ -372,7 +372,7 @@ WHERE ranking = 1;
 
 ```
 
-![HR Analytics](Pregunta9.png)
+![HR Analytics](PREGUNTA9.png)
 
 ### Pregunta #10:¿Qué categorías presentan pedidos con costos de envío superiores al promedio general?
 
@@ -394,6 +394,6 @@ HAVING AVG(od.shipping_cost) > (
 
 ```
 
-![HR Analytics](Pregunta10.png)
+![HR Analytics](PREGUNTA10.png)
 
 Se identificaron categorías cuyos costos de envío están por encima del promedio, se recomienda evaluar los costos de envío en estas categorías y buscar optimizaciones logística
