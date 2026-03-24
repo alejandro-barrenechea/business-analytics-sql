@@ -31,7 +31,7 @@ Para realizar
 
 En este análisis, ayudo a responder las siguientes preguntas de negocio sobre ventas, clientes, productos y logística:
 
-1. **Distribución de ventas por categoría:** ¿Cómo se distribuyen las ventas de la subcategoría y año en términos porcentuales?
+1. **Distribución de ventas por subcategoría:** ¿Cómo se distribuyen las ventas de la subcategoría y año en términos porcentuales?
 
 2. **Contribución por prioridad de pedido:** ¿Qué porcentaje de ingresos aporta cada nivel de prioridad de pedido?
 
