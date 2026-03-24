@@ -234,7 +234,7 @@ order by cantidad_pedidos desc,year ;
 
 ```
 
-![HR Analytics](Pregunta4.png)
+![HR Analytics](captura4.png)
 
 _Distribución por pedidos_
 
@@ -397,11 +397,3 @@ HAVING AVG(od.shipping_cost) > (
 ![HR Analytics](Pregunta10.png)
 
 Se identificaron categorías cuyos costos de envío están por encima del promedio, se recomienda evaluar los costos de envío en estas categorías y buscar optimizaciones logística
-
-
-
-
-
-
-
-
