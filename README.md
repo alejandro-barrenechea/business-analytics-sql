@@ -19,6 +19,8 @@ Los datos originales, junto con una explicación de cada columna, se pueden enco
 
 El conjunto de datos incluye una tabla que capturan el registro de ventas, pedidos, clientes, productos, enviós distribuidos en más de 25,000 registros y 21 columnas.
 
+Para realizar 
+
 
 ![HR Analytics](captura1.png)
 
@@ -46,6 +48,71 @@ En este análisis, ayudo a responder las siguientes preguntas de negocio sobre v
 ## Limpieza de Datos
 
 Antes de realizar el análisis, es fundamental asegurar que los datos estén limpios y listos.
+
+Como la base de datos original se encuentra en una sola tabla, se procedió a dividirla en 4 tablas mediante el uso de SELECT INTO, con el objetivo de estructurar mejor la información y facilitar el análisis mediante relaciones. Esta separación permite trabajar de forma más organizada y realizar cruces de datos utilizando JOIN.
+
+```sql
+SELECT DISTINCT 
+    customer_name,
+    segment,
+    state,
+    country,
+    market,
+    region
+INTO customers
+FROM basetotal;
+
+SELECT DISTINCT 
+    product_id,
+    product_name,
+    category,
+    sub_category
+INTO products
+FROM basetotal;
+
+
+SELECT DISTINCT 
+    order_id,
+    order_date,
+    ship_date,
+    ship_mode,
+    customer_name,
+    order_priority,
+    year
+INTO orders
+FROM basetotal;
+
+
+SELECT 
+    order_id,
+    product_id,
+    sales,
+    quantity,
+    discount,
+    profit,
+    shipping_cost
+INTO order_details
+FROM basetotal;
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #### Valores Nulos o Faltantes
 
@@ -129,7 +196,7 @@ Los resultados nos indican que los ingresos mas fuertes para la empresa son por 
 
 ### Pregunta #3: ¿Qué clientes compran la mayor cantidad de productos?
 
-Se identificaron los clientes que compran la mayor cantidad de productos utilizando SUM(quantity) para obtener el total de unidades adquiridas por cada cliente. Luego, se agruparon los datos por customer_name mediante GROUP BY y se ordenaron de forma descendente para visualizar a los clientes con mayor volumen de compras. Finalmente, se utilizó TOP 10 para obtener únicamente los clientes con mayor cantidad de productos adquiridos.
+Se identificaron los clientes que compran la mayor cantidad de productos utilizando SUM(quantity) para obtener el total de unidades adquiridas por cada cliente. Luego, se agruparon los datos por customer_name mediante GROUP BY y se ordenaron de forma descendente para visualizar a los clientes con mayor volumen de compras..
 
 ```sql
 
@@ -177,28 +244,167 @@ order by cantidad_pedidos desc,year ;
 
 ![HR Analytics](Pregunta4.png)
 
-_Distribución de pedidos_
+_Distribución por pedidos_
 
 Algunos tipos de envío concentran la mayor cantidad de pedidos, lo que indica su preferencia por parte de los clientes; por ello, se recomienda optimizar estos métodos para mejorar la eficiencia operativa
 
 
+### Pregunta #5: ¿Cuáles son los productos que generan mayor ganancia por año?
+
+Primero se utilizo la función SUM(profit) para calcular la ganancia total generada por cada producto. Los datos se agruparon por year y product_name mediante GROUP BY, lo que permitió identificar los productos con mayores beneficios dentro de cada año.
+
+
+```sql
+
+with top_ganancia_producto as (
+select top 10
+year,product_name,format(sum(profit),'N2') as 'total_ganancia'
+from basetotal
+group by year,product_name
+order by sum(profit) desc
+)
+select * from top_ganancia_producto
+
+```
+
+![HR Analytics](Pregunta5.png)
+
+_Producto_ganancia_
+
+Se identificó que el producto Canon imageCLASS 2200 Advanced Copier ha sido uno de los más rentables, destacando por generar la mayor ganancia en dos años consecutivos, se recomienda asegurar su disponibilidad y considerar estrategias comerciales para potenciar aún más sus ventas, dado su impacto positivo en las ganancias.
 
 
 
+### Pregunta #6: ¿Qué productos tienen un tiempo de almacenamiento superior al promedio y cómo se relaciona esto con su rentabilidad?
+
+Para esta pregunta, se utilizo la función AVG([Dias de almacén]) para calcular el tiempo promedio de almacenamiento por producto y AVG(profit) para obtener su rentabilidad promedio. Los datos se agruparon por product_name mediante GROUP BY
+
+```sql
+
+WITH ganancias_promedio_producto AS (
+    SELECT 
+        product_name,
+        AVG([Dias de almacén]) AS Dias_almacen,
+        AVG(profit) AS promedio_ganancias
+    FROM basetotal
+    GROUP BY product_name
+    HAVING AVG([Dias de almacén]) > (
+        SELECT AVG([Dias de almacén]) FROM basetotal
+    )
+)
+SELECT *
+FROM ganancias_promedio_producto
+ORDER BY promedio_ganancias desc;
+
+```
+
+![HR Analytics](Pregunta6.png)
 
 
 
+Un mayor tiempo de almacenamiento indica que algunos productos tardan más en ser procesados o enviados; sin embargo, esto no siempre se traduce en mayor rentabilidad
+
+
+### Pregunta #7: ¿Qué segmentos de clientes generan mayor rentabilidad y cómo ha evolucionado en el tiempo?
+
+Para esta pregunta, utilicé la función SUM(profit) para calcular la ganancia total generada por cada segmento de cliente. Los datos se agruparon por year y segment mediante GROUP BY, lo que permitió analizar la evolución de la rentabilidad a lo largo del tiempo.
+
+```sql
+
+WITH rentabilidad_segmento AS (
+    SELECT 
+        year,
+        segment,
+        SUM(profit) AS total_ganancia
+    FROM basetotal
+    GROUP BY year, segment
+)
+SELECT *
+FROM rentabilidad_segmento
+ORDER BY year, total_ganancia DESC;
+
+```
+
+![HR Analytics](Pregunta7.png)
+
+
+Se recomienda enfocar estrategias comerciales y de fidelización en los segmentos más rentables para maximizar los ingresos.
 
 
 
+### Pregunta #8: ¿Qué segmentos de clientes generan mayor rentabilidad y cómo ha evolucionado en el tiempo?
 
 
+Para esta pregunta, utilicé una comparación entre shipping_cost y profit, con el objetivo de identificar pedidos donde el costo logístico es alto pero la ganancia es baja o incluso negativa.
+
+```sql
+
+SELECT 
+    order_id,
+    product_name,
+    shipping_cost,
+    profit
+FROM basetotal
+WHERE shipping_cost > (
+    SELECT AVG(shipping_cost) FROM basetotal
+)
+AND profit < (
+    SELECT AVG(profit) FROM basetotal
+)
+ORDER BY shipping_cost DESC;
+
+```
+
+![HR Analytics](Pregunta8.png)
+
+Se recomienda revisar la estrategia logística y los costos de envío en estos casos, ya que podrían estar reduciendo las ganancias del negocio.
 
 
+### Pregunta #9: ¿Cuáles son los productos más vendidos dentro de cada categoría según la cantidad total?
 
+Utilicé la función SUM(quantity) para calcular la cantidad total vendida por producto. Luego, apliqué la función de ventana ROW_NUMBER() particionando por category
 
+```sql
+WITH ranking_productos AS (
+    SELECT 
+        category,
+        product_name,
+        SUM(quantity) AS total_vendido,
+        ROW_NUMBER() OVER (PARTITION BY category ORDER BY SUM(quantity) DESC) AS ranking
+    FROM basetotal
+    GROUP BY category, product_name
+)
+SELECT *
+FROM ranking_productos
+WHERE ranking = 1;
 
+```
 
+![HR Analytics](Pregunta9.png)
+
+### Pregunta #10:¿Qué categorías presentan pedidos con costos de envío superiores al promedio general?
+
+Se resolvió esta pregunta fácilmente utilizando la función AVG(shipping_cost) mediante una subconsulta, lo que permitió obtener el costo de envío promedio general. Luego, se aplicó un INNER JOIN entre las tablas order_details y products usando product_id
+
+```sql
+
+SELECT 
+    p.category,
+    AVG(od.shipping_cost) AS promedio_costo_envio
+FROM order_details od
+INNER JOIN products p 
+    ON od.product_id = p.product_id
+GROUP BY p.category
+HAVING AVG(od.shipping_cost) > (
+    SELECT AVG(shipping_cost)
+    FROM order_details
+);
+
+```
+
+![HR Analytics](Pregunta10.png)
+
+Se identificaron categorías cuyos costos de envío están por encima del promedio, se recomienda evaluar los costos de envío en estas categorías y buscar optimizaciones logística
 
 
 
