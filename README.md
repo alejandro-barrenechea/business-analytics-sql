@@ -31,7 +31,7 @@ Para realizar
 
 En este análisis, ayudo a responder las siguientes preguntas de negocio sobre ventas, clientes, productos y logística:
 
-1. **Distribución de ventas por categoría:** ¿Cómo se distribuyen las ventas según subcategoría y año en términos porcentuales?
+1. **Distribución de ventas por categoría:** ¿Cómo se distribuyen las ventas de la subcategoría y año en términos porcentuales?
 
 2. **Contribución por prioridad de pedido:** ¿Qué porcentaje de ingresos aporta cada nivel de prioridad de pedido?
 
@@ -39,11 +39,20 @@ En este análisis, ayudo a responder las siguientes preguntas de negocio sobre v
 
 4. **Preferencias de envío:** ¿Qué tipos de envío fueron más utilizados y cuántos pedidos se realizaron por cada uno?
 
-5. **Desempeño por Viajes:** PENDIENTE
 
-6. **Productos más rentables** ¿Cuáles son los productos que generan mayor ganancia por año?
+5. **Productos más rentables** ¿Cuáles son los productos que generan mayor ganancia por año?
 
-7. **Relación entre almacenamiento y rentabilidad:** ¿Qué productos tienen un tiempo de almacenamiento superior al promedio y cómo se relaciona esto con su rentabilidad?
+6. **Tiempo de envío y rentabilidad:**¿Qué productos tienen un tiempo de almacenamiento superior al promedio y cómo se relaciona esto con su rentabilidad?
+
+7. **Clientes rentabilidad:** ¿Qué segmentos de clientes generan mayor rentabilidad y cómo ha evolucionado en el tiempo?
+
+8. **Eficiencia logística:**¿Qué pedidos presentan altos costos de envío pero baja rentabilidad?
+
+
+9. **Volumen de ventas:**¿Cuáles son los productos más vendidos dentro de cada categoría según la cantidad total?
+
+10. **Costos de envío por categoría:**¿Qué categorías presentan pedidos con costos de envío superiores al promedio general?
+
 
 ## Limpieza de Datos
 
@@ -95,23 +104,6 @@ INTO order_details
 FROM basetotal;
 
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #### Valores Nulos o Faltantes
@@ -332,7 +324,7 @@ Se recomienda enfocar estrategias comerciales y de fidelización en los segmento
 
 
 
-### Pregunta #8: ¿Qué segmentos de clientes generan mayor rentabilidad y cómo ha evolucionado en el tiempo?
+### Pregunta #8: ¿Qué pedidos presentan altos costos de envío pero baja rentabilidad?
 
 
 Para esta pregunta, utilicé una comparación entre shipping_cost y profit, con el objetivo de identificar pedidos donde el costo logístico es alto pero la ganancia es baja o incluso negativa.
