@@ -22,7 +22,7 @@ El conjunto de datos incluye una tabla que capturan el registro de ventas, pedid
 Para realizar 
 
 
-![HR Analytics](captura1.png)
+![HR Analytics](imagenes/captura1.png)
 
 
 
@@ -149,7 +149,7 @@ select * from analisis_subcategoria
 order by sub_CATEGORY,year desc;
 
 ```
-![HR Analytics](PREGUNTA1.png)
+![HR Analytics](imagenes/PREGUNTA1.png)
 
 _Distribución porcentual de ventas_
 
@@ -179,7 +179,7 @@ order by [Ingreso Totales] desc;
 
 ```
 
-![HR Analytics](PREGUNTA2.png)
+![HR Analytics](imagenes/PREGUNTA2.png)
 
 _Ingreso_Prioridad_
 
@@ -205,7 +205,7 @@ select * from mejores_vendedores;
 
 ```
 
-![HR Analytics](captura3.png)
+![HR Analytics](imagenes/captura3.png)
 
 _Clientes_Top_
 
@@ -234,7 +234,7 @@ order by cantidad_pedidos desc,year ;
 
 ```
 
-![HR Analytics](captura4.png)
+![HR Analytics](imagenes/captura4.png)
 
 _Distribución por pedidos_
 
@@ -259,7 +259,7 @@ select * from top_ganancia_producto
 
 ```
 
-![HR Analytics](PREGUNTA5.png)
+![HR Analytics](imagenes/PREGUNTA5.png)
 
 _Producto_ganancia_
 
@@ -290,7 +290,7 @@ ORDER BY promedio_ganancias desc;
 
 ```
 
-![HR Analytics](PREGUNTA6.png)
+![HR Analytics](imagenes/PREGUNTA6.png)
 
 
 
@@ -317,7 +317,7 @@ ORDER BY year, total_ganancia DESC;
 
 ```
 
-![HR Analytics](PREGUNTA7.png)
+![HR Analytics](imagenes/PREGUNTA7.png)
 
 
 Se recomienda enfocar estrategias comerciales y de fidelización en los segmentos más rentables para maximizar los ingresos.
@@ -347,7 +347,7 @@ ORDER BY shipping_cost DESC;
 
 ```
 
-![HR Analytics](PREGUNTA8.png)
+![HR Analytics](imagenes/PREGUNTA8.png)
 
 Se recomienda revisar la estrategia logística y los costos de envío en estos casos, ya que podrían estar reduciendo las ganancias del negocio.
 
@@ -372,7 +372,7 @@ WHERE ranking = 1;
 
 ```
 
-![HR Analytics](PREGUNTA9.png)
+![HR Analytics](imagenes/PREGUNTA9.png)
 
 ### Pregunta #10:¿Qué categorías presentan pedidos con costos de envío superiores al promedio general?
 
@@ -394,6 +394,6 @@ HAVING AVG(od.shipping_cost) > (
 
 ```
 
-![HR Analytics](PREGUNTA10.png)
+![HR Analytics](imagenes/PREGUNTA10.png)
 
 Se identificaron categorías cuyos costos de envío están por encima del promedio, se recomienda evaluar los costos de envío en estas categorías y buscar optimizaciones logística
