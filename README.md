@@ -129,7 +129,7 @@ FROM basetotal;
 
 ### Pregunta #1: ¿Cómo se distribuyen las ventas de la subcategoría y año en términos porcentuales?
 
-Calculé el total de ventas por año y subcategoría utilizando SUM(sales) y luego obtuve el porcentaje que representa cada año dentro de su subcategoría usando SUM() OVER (PARTITION BY sub_category). Esto me permite ver qué proporción de las ventas corresponde a cada subcategoría en cada año. Además, formateé el porcentaje con dos decimales para mayor claridad.
+Calculé el total de ventas por año y subcategoría utilizando SUM(sales) y luego obtuve el porcentaje que representa cada año dentro de su subcategoría usando SUM() OVER (PARTITION BY sub_category). Esto me permite ver qué proporción de las ventas corresponde a cada subcategoría en cada año.
 
 
 ```sql
