@@ -58,6 +58,25 @@ En este análisis, ayudo a responder las siguientes preguntas de negocio sobre v
 
 Antes de realizar el análisis, es fundamental asegurar que los datos estén limpios y listos.
 
+#### Valores Nulos o Faltantes
+
+Primero, verifiqué la existencia de valores faltantes en el campo clave: `order_id`. No se encontraron valores nulos.
+
+```sql
+-- Verificar valores faltantes en la tabla SuperStoree --
+
+SELECT COUNT(*) 
+FROM SuperStore
+WHERE order_id IS NULL;
+
+-- Verificar valores duplicados en la tabla SuperStore --
+
+SELECT order_id,COUNT(*) 
+FROM SuperStore
+GROUP BY order_id 
+HAVING COUNT(*)>1
+```
+
 Como la base de datos original se encuentra en una sola tabla, se procedió a dividirla en 4 tablas mediante el uso de SELECT INTO, con el objetivo de estructurar mejor la información y facilitar el análisis mediante relaciones. Esta separación permite trabajar de forma más organizada y realizar cruces de datos utilizando JOIN.
 
 ```sql
@@ -105,25 +124,6 @@ FROM basetotal;
 
 ```
 
-
-#### Valores Nulos o Faltantes
-
-Primero, verifiqué la existencia de valores faltantes en el campo clave: `order_id`. No se encontraron valores nulos.
-
-```sql
--- Verificar valores faltantes en la tabla SuperStoree --
-
-SELECT COUNT(*) 
-FROM SuperStore
-WHERE order_id IS NULL;
-
--- Verificar valores duplicados en la tabla SuperStore --
-
-SELECT order_id,COUNT(*) 
-FROM SuperStore
-GROUP BY order_id 
-HAVING COUNT(*)>1
-```
 
 ## Análisis Exploratorio de Datos (EDA) e Insights
 
